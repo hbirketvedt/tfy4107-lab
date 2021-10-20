@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.interpolate import CubicSpline
 import scipy as sc
+import pandas as pd
 
 # Horisontal avstand mellom festepunktene er 0.200 m
 h = 0.200
@@ -65,6 +66,19 @@ attempts=1
 # xfast = xfast/1000
 # yfast = yfast/1000
 
+trial_1 = np.asarray(pd.read_csv("data\\trial_1.csv"))
+trial_2 = np.asarray(pd.read_csv("data\\trial_2.csv"))
+trial_3 = np.asarray(pd.read_csv("data\\trial_3.csv"))
+trial_4 = np.asarray(pd.read_csv("data\\trial_4.csv"))
+trial_5 = np.asarray(pd.read_csv("data\\trial_5.csv"))
+trial_6 = np.asarray(pd.read_csv("data\\trial_6.csv"))
+trial_7 = np.asarray(pd.read_csv("data\\trial_7.csv"))
+trial_8 = np.asarray(pd.read_csv("data\\trial_8.csv"))
+trial_9 = np.asarray(pd.read_csv("data\\trial_9.csv"))
+trial_10 = np.asarray(pd.read_csv("data\\trial_10.csv"))
+trial_11 = np.asarray(pd.read_csv("data\\trial_11.csv"))
+
+
 yfast = [0.254, 0.202, 0.226, 0.154, 0.093, 0.057, 0.08,  0.002]
 # Når programmet her har avsluttet while-løkka, betyr det at
 # tallverdiene i tabellen yfast vil resultere i en tilfredsstillende bane. 
@@ -91,8 +105,19 @@ y = cs(x)       #y=tabell med 1401 verdier for y(x)
 dy = cs(x,1)    #dy=tabell med 1401 verdier for y'(x)
 d2y = cs(x,2)   #d2y=tabell med 1401 verdier for y''(x)
 
-def v(y):
-    return np.sqrt((10*g*(y0-y))/7)
+
+#
+# def v(y):
+#     return np.sqrt((10*g*(y0-y))/7)
+
+def v(trial):
+    print(trial)
+    y = []
+    for list in trial:
+        y = np.asarray(y)
+    return np.sqrt((10 * g * (y0 - y)) / 7)
+
+
 
 def helningsvinkel(dy):
     return np.arctan(dy)
@@ -168,8 +193,8 @@ plt.show()
 # print('NB: SKRIV NED festepunkthøydene når du/dere er fornøyd med banen.')
 # print('Eller kjør programmet på nytt inntil en attraktiv baneform vises.')
 
-def v(y):
-    return np.sqrt((10*g*(y0-y))/7)
+# def v(y):
+#     return np.sqrt((10*g*(y0-y))/7)
 
 plt.plot(x, v(y))
 # plt.xticks(list(range(len(x))), x)
@@ -203,7 +228,6 @@ plt.show()
 # plt.grid()
 # 
 # plt.show()
-print(summed_t())
 
 plt.plot(summed_t(), remove_last_x())
 plt.xlabel('$t$ (s)',fontsize=12)
