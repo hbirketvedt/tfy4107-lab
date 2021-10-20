@@ -59,7 +59,7 @@ def extract_averages(columnindex):
         values = extract_column(trial, columnindex)
         counter += 1
         if first == True:                 # fyller med 0'er så man kan aksessere etter index
-            for index in range(len(values)+3):
+            for index in range(len(values)+4): # Ulik lengde på listene
                 averages.append(0)
             first = False
         for index in range(len(values)):
