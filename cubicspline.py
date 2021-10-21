@@ -106,16 +106,16 @@ dy = cs(x,1)    #dy=tabell med 1401 verdier for y'(x)
 d2y = cs(x,2)   #d2y=tabell med 1401 verdier for y''(x)
 
 
-#
-# def v(y):
-#     return np.sqrt((10*g*(y0-y))/7)
 
-def v(trial):
-    print(trial)
-    y = []
-    for list in trial:
-        y = np.asarray(y)
-    return np.sqrt((10 * g * (y0 - y)) / 7)
+def v(y):
+    return np.sqrt((10*g*(y0-y))/7)
+
+# def v(trial):
+#     print(trial)
+#     y = []
+#     for list in trial:
+#         y = np.asarray(y)
+#     return np.sqrt((10 * g * (y0 - y)) / 7)
 
 
 
@@ -131,6 +131,9 @@ def helningsvinkel(dy):
 
 def vx():
     return v(y) * np.cos(helningsvinkel(dy))
+
+plt.plot(x, vx())
+plt.show()
 
 
 def delta_t_hjelpefunksjon(vx0, vx1):
@@ -172,14 +175,14 @@ def remove_last_x():
 
 
 #Eksempel: Plotter banens form y(x)
-baneform = plt.figure('y(x)',figsize=(12,6))
-plt.plot(x,y,xfast,yfast,'*')
-plt.title('Banens form')
-plt.xlabel('$x$ (m)',fontsize=20)
-plt.ylabel('$y(x)$ (m)',fontsize=20)
-plt.ylim(0.0,0.40)
-plt.grid()
-plt.show()
+# baneform = plt.figure('y(x)',figsize=(12,6))
+# plt.plot(x,y,xfast,yfast,'*')
+# plt.title('Banens form')
+# plt.xlabel('$x$ (m)',fontsize=20)
+# plt.ylabel('$y(x)$ (m)',fontsize=20)
+# plt.ylim(0.0,0.40)
+# plt.grid()
+# plt.show()
 #Figurer kan lagres i det formatet du foretrekker:
 #baneform.savefig("baneform.pdf", bbox_inches='tight')
 #baneform.savefig("baneform.png", bbox_inches='tight')
@@ -196,31 +199,31 @@ plt.show()
 # def v(y):
 #     return np.sqrt((10*g*(y0-y))/7)
 
-plt.plot(x, v(y))
-# plt.xticks(list(range(len(x))), x)
-# plt.xlabel("x")
-plt.xlabel('$x$ (m)',fontsize=20)
-plt.ylabel('$v(x)$ (m)',fontsize=20)
-plt.grid()
-
-plt.show()
-
-
-
-plt.plot(x, helningsvinkel(dy))
-plt.xlabel('$x$ (radianer)',fontsize=12)
-plt.ylabel('$helningsvinkel$ (m)',fontsize=20)
-plt.grid()
-
-plt.show()
+# plt.plot(x, v(y))
+# # plt.xticks(list(range(len(x))), x)
+# # plt.xlabel("x")
+# plt.xlabel('$x$ (m)',fontsize=20)
+# plt.ylabel('$v(x)$ (m)',fontsize=20)
+# plt.grid()
+#
+# plt.show()
 
 
-plt.plot(x, vx())
-plt.xlabel('$x$ (radianer)',fontsize=12)
-plt.ylabel('$vx(x)$ (m)',fontsize=20)
-plt.grid()
-
-plt.show()
+#
+# plt.plot(x, helningsvinkel(dy))
+# plt.xlabel('$x$ (radianer)',fontsize=12)
+# plt.ylabel('$helningsvinkel$ (m)',fontsize=20)
+# plt.grid()
+#
+# plt.show()
+#
+#
+# plt.plot(x, vx())
+# plt.xlabel('$x$ (radianer)',fontsize=12)
+# plt.ylabel('$vx(x)$ (m)',fontsize=20)
+# plt.grid()
+#
+# plt.show()
 
 # plt.plot(x, t())
 # plt.xlabel('$x$ (radianer)',fontsize=12)
@@ -229,10 +232,10 @@ plt.show()
 # 
 # plt.show()
 
-plt.plot(summed_t(), remove_last_x())
-plt.xlabel('$t$ (s)',fontsize=12)
-plt.ylabel('$x$ (m)',fontsize=20)
-plt.grid()
-
-plt.show()
+# plt.plot(summed_t(), remove_last_x())
+# plt.xlabel('$t$ (s)',fontsize=12)
+# plt.ylabel('$x$ (m)',fontsize=20)
+# plt.grid()
+#
+# plt.show()
 
