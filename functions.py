@@ -92,8 +92,7 @@ average_trial = get_average_trial()
 x = extract_column(trial_2, 1)
 Nx = len(x)
 y = extract_column(trial_2, 2)
-np.append(y, [0,0,0,0])
-np.append(x, [0,0,0,0])
+t = extract_column(trial_2, 0)
 
 
 baneform = plt.figure('y(x)',figsize=(12,6))
@@ -144,15 +143,64 @@ def summed_t(trial):
         list.append(sum)
     return np.array(list)
 
+def remove_last_x():
+    sub_arr = x[:-1].copy()
+    return sub_arr
+
 print(summed_t(average_trial))
 print(delta_t(average_trial))
 
-
-
-
-
-dy = dy[20:]
-x = x[20:]
 plt.plot(x, dy)
+plt.show()
+
+# Eksempel: Plotter banens form y(x)
+baneform = plt.figure('y(x)',figsize=(12,6))
+plt.plot(x,y,'*')
+plt.title('Banens form')
+plt.xlabel('$x$ (m)',fontsize=20)
+plt.ylabel('$y(x)$ (m)',fontsize=20)
+plt.ylim(0.0,0.40)
+plt.grid()
+plt.show()
+#
+#
+# plt.plot(x, v(y))
+# plt.xticks(list(range(len(x))), x)
+# plt.xlabel("x")
+# plt.xlabel('$x$ (m)',fontsize=20)
+# plt.ylabel('$v(x)$ (m)',fontsize=20)
+# plt.grid()
+#
+# plt.show()
+
+
+
+plt.plot(x, helningsvinkel(dy))
+plt.xlabel('$x$ (radianer)',fontsize=12)
+plt.ylabel('$helningsvinkel$ (m)',fontsize=20)
+plt.grid()
+
+plt.show()
+
+
+plt.plot(x, vx(average_trial))
+plt.xlabel('$x$ (radianer)',fontsize=12)
+plt.ylabel('$vx(x)$ (m)',fontsize=20)
+plt.grid()
+
+plt.show()
+
+plt.plot(x, t)
+plt.xlabel('$x$ (radianer)',fontsize=12)
+plt.ylabel('$t(x)$ (m)',fontsize=20)
+plt.grid()
+
+plt.show()
+
+plt.plot(summed_t(average_trial), remove_last_x())
+plt.xlabel('$t$ (s)',fontsize=12)
+plt.ylabel('$x$ (m)',fontsize=20)
+plt.grid()
+
 plt.show()
 
