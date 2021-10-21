@@ -3,6 +3,27 @@ import numpy as np
 from scipy.interpolate import CubicSpline
 import scipy as sc
 import pandas as pd
+from sklearn.preprocessing import MinMaxScaler
+
+scaler = MinMaxScaler()
+def normalize_data(df: pd.DataFrame) -> pd.DataFrame:
+    # Finds the maximum value in y column, and set it as first row
+    # Finds the first value in y column that exceeds min_height and set it as last row
+    first_row = df['y'].argmax()
+    last_row = df.index[df['y'] < 0.13][0] if df.index[df['y'] < 0.13][0] != 0 else None
+    df = df[first_row:last_row].reset_index(drop=True)
+    
+    # Normalize x column ranging from 0 - 1.4M
+    df['x'] = scaler.fit_transform(df['x'].values.reshape(-1,1)) * 1.4
+    # Normalize t column so that it starts from t=0
+    df['t'] -= df.iloc[0]['t']
+    
+    return df[['t', 'x', 'y']]
+
+def plot_trial(trial: str):
+    df = pd.read_csv(f"data/{trial}")
+    normalized_df = normalize_data(df)
+    plt.plot(normalized_df['x'], normalized_df['y'])
 
 #konstanter
 g = 9.81
