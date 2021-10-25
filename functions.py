@@ -42,6 +42,9 @@ trial_9 = np.genfromtxt("data\\trial_9.csv", delimiter=",", skip_header=2)
 trial_10 = np.genfromtxt("data\\trial_10.csv", delimiter=",", skip_header=2)
 trial_11 = np.genfromtxt("data\\trial_11.csv", delimiter=",", skip_header=2)
 
+trial_2df = pd.DataFrame(trial_2)
+norm_2df = normalize_data(trial_2df)
+
 trials = {
     "trial_2": trial_2,
     "trial_3": trial_3,
@@ -66,85 +69,50 @@ trials = {
 #     for index in range(len(ex))
 #     return np.asarray(averages)
 
-def extract_averages(columnindex):
-    averages = []
-    first = True
-    counter = 0
-    for trial in trials.values():
-        values = extract_column(trial, columnindex)
-        counter += 1
-        if first == True:                 # fyller med 0'er så man kan aksessere etter index
-            for index in range(len(values)): # Ulik lengde på listene
-                averages.append(0)
-            first = False
-        for index in range(len(values)):
-            averages[index] += values[index]
-    for index in range(len(averages)):
-        averages[index] = averages[index]/counter
-    return np.asarray(averages)
+# def extract_averages(columnindex):
+#     averages = []
+#     first = True
+#     counter = 0
+#     for trial in trials.values():
+#         values = extract_column(trial, columnindex)
+#         counter += 1
+#         if first == True:                    # fyller med 0'er så man kan aksessere etter index
+#             for index in range(len(values)): # Ulik lengde på listene
+#                 averages.append(0)
+#             first = False
+#         for index in range(len(values)):
+#             print(str(len(averages)) + (" lengde på averages"))
+#             print((str(len(values)) + str(" Lengde på values")))
+#             averages[index] += values[index]
+#     for index in range(len(averages)):
+#         averages[index] = averages[index]/counter
+#     return np.asarray(averages)
 
-def get_average_trial():
-    a1 = extract_averages(0)
-    a2 = extract_averages(1)
-    a3 = extract_averages(2)
-    a4 = extract_averages(3)
-    a5 = extract_averages(4)
-    a6 = extract_averages(5)
-    a7 = extract_averages(6)
-    a8 = extract_averages(7)
-    # a9 = extract_averages(8)
-    # a10 = extract_averages(9)
-    # a11 = extract_averages(10)
-    # a12 = extract_averages(11)
-    # a13 = extract_averages(12)
-    averages = []
-    for i in range(len(a1)):
-        list = [a1[i],a2[i],a3[i],a4[i],a5[i],a6[i],a7[i],a8[i]]
-        averages.append(list)
-    return np.asarray(averages)
+# def get_average_trial():
+#     a1 = extract_averages(0)
+#     a2 = extract_averages(1)
+#     a3 = extract_averages(2)
+#     a4 = extract_averages(3)
+#     a5 = extract_averages(4)
+#     a6 = extract_averages(5)
+#     a7 = extract_averages(6)
+#     a8 = extract_averages(7)
+#     # a9 = extract_averages(8)
+#     # a10 = extract_averages(9)
+#     # a11 = extract_averages(10)
+#     # a12 = extract_averages(11)
+#     # a13 = extract_averages(12)
+#     averages = []
+#     for i in range(len(a1)):
+#         list = [a1[i],a2[i],a3[i],a4[i],a5[i],a6[i],a7[i],a8[i]]
+#         averages.append(list)
+#     return np.asarray(averages)
 
-def extract_column(trial, columnindex):
+def extract_column(trial, columnindex): # Henter ut verdiene fra en kolonne i csv-filen og returnere som np.array
     y = []
     for list in trial:
         y.append(list[columnindex])
     return np.asarray(y)
-
-average_trial = get_average_trial()
-x = extract_column(trial_2, 1)
-Nx = len(x)
-y = extract_column(trial_2, 2)
-t = extract_column(trial_2, 0)
-
-
-baneform = plt.figure('y(x)',figsize=(12,6))
-plt.plot(x,y,'*')
-plt.title('Banens form')
-plt.xlabel('$x$ (m)',fontsize=20)
-plt.ylabel('$y(x)$ (m)',fontsize=20)
-plt.ylim(0.0,0.40)
-plt.grid()
-plt.show()
-
-cs = CubicSpline(x, y, bc_type='natural')
-
-dy = cs(x,1)
-d2y = cs(x,2)
-
-
-
-
-def v(trial):
-    y = extract_column(trial, 2)
-    return np.sqrt((10 * g * (y0 - y)) / 7)
-
-def helningsvinkel(dy):
-    return np.arctan(dy)
-
-def vx(trial):
-    return v(trial) * np.cos(helningsvinkel(dy))
-
-# def delta_t_hjelpefunksjon(vx0, vx1):
-#     return 2*dx/(vx0 + vx1)
 
 def delta_t(trial):
     list = []
@@ -168,11 +136,40 @@ def remove_last_x():
     sub_arr = x[:-1].copy()
     return sub_arr
 
-print(summed_t(average_trial))
-print(delta_t(average_trial))
+def v(trial):
+    # y = extract_column(trial, 2)
+    # return np.sqrt((10 * g * (y0 - y)) / 7)
+    return extract_column(trial, 5)
 
-plt.plot(x, dy)
-plt.show()
+def helningsvinkel(trial):
+    return extract_column(trial, 11)
+    # return np.arctan(dy)
+
+def vx(trial):
+    return extract_column(trial, 3)
+    # return v(trial) * np.cos(helningsvinkel(dy))
+
+
+x = extract_column(trial_3, 1)
+Nx = len(x)
+y = extract_column(trial_3, 2)
+t = extract_column(trial_3, 0)
+
+for i in range(1, len(x)):
+    if x[i] <= x[i-1]:
+        print(x[i] - x[i-1])
+        print(i+2)
+
+
+# cs = CubicSpline(x, y, bc_type='natural')
+#
+# dy = cs(x,1)
+# d2y = cs(x,2)
+
+
+# def delta_t_hjelpefunksjon(vx0, vx1):
+#     return 2*dx/(vx0 + vx1)
+
 
 # Eksempel: Plotter banens form y(x)
 baneform = plt.figure('y(x)',figsize=(12,6))
@@ -196,32 +193,37 @@ plt.show()
 
 
 
-plt.plot(x, helningsvinkel(dy))
-plt.xlabel('$x$ (radianer)',fontsize=12)
-plt.ylabel('$helningsvinkel$ (m)',fontsize=20)
-plt.grid()
-
-plt.show()
 
 
-plt.plot(x, vx(average_trial))
-plt.xlabel('$x$ (radianer)',fontsize=12)
+plt.plot(x, vx(trial_2))
+plt.title("x, vx")
+plt.xlabel('$x$',fontsize=12)
 plt.ylabel('$vx(x)$ (m)',fontsize=20)
 plt.grid()
 
 plt.show()
 
 plt.plot(x, t)
+plt.title("x, t")
 plt.xlabel('$x$ (radianer)',fontsize=12)
 plt.ylabel('$t(x)$ (m)',fontsize=20)
 plt.grid()
 
 plt.show()
 
-plt.plot(summed_t(average_trial), remove_last_x())
+plt.plot(summed_t(trial_2), remove_last_x())
+plt.title("Summert tid, x")
 plt.xlabel('$t$ (s)',fontsize=12)
 plt.ylabel('$x$ (m)',fontsize=20)
 plt.grid()
 
 plt.show()
+
+plt.plot(extract_column(trial_2, 1), extract_column(trial_2, 3))
+plt.title("test")
+plt.show()
+
+print(vx(trial_3))
+
+
 
